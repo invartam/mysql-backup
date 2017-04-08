@@ -1,0 +1,16 @@
+#!/bin/sh
+DATE=$(date +%Y%m%d-%H%M)
+
+. /etc/backup.conf
+
+dblist=$BACKUP_DB
+if [ $BACKUP_DB = 'all' ]
+then
+  dblist=$(mysql -hmysql -uroot -ptest -s -N -e "show databases")
+fi
+
+for db in $dblist
+do
+  mkdir -p /backup/$DATE
+  mysqldump -h$MYSQL_HOST -P$MYSQL_PORT -u$MYSQL_USER -p$MYSQL_PASS --lock-tables=false --databases $db > /backup/$DATE/$MYSQL_HOST-$db.sql
+done

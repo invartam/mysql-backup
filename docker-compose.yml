@@ -1,0 +1,25 @@
+version: "2"
+services:
+  mysql:
+    image: mariadb
+    container_name: mysql
+    environment: 
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_DATABASE=test
+    expose: 
+      - 3306
+  
+  backup:
+    build: .
+    container_name: backup
+    depends_on: 
+      - mysql
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASS=test
+      - BACKUP_DB=all
+      - INTERVAL=15min
+    volumes: 
+      - ./backup:/backup
