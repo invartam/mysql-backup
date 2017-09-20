@@ -13,4 +13,9 @@ for db in $dblist
 do
   mkdir -p /backup/$DATE
   mysqldump -h$MYSQL_HOST -P$MYSQL_PORT -u$MYSQL_USER -p$MYSQL_PASS --lock-tables=false --databases $db > /backup/$DATE/$MYSQL_HOST-$db.sql
+  if [ $? -eq 0 ]; then
+    echo "[SUCCESS] Backup of $db"
+  else
+    echo "[ERROR] Backup of $db"
+  fi
 done
