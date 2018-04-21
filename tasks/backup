@@ -19,3 +19,5 @@ do
     echo "[ERROR] Backup of $db"
   fi
 done
+find /backup/mysql* -type d -mtime +6 -exec rm -rf {} \;
+
